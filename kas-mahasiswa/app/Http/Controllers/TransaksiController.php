@@ -6,12 +6,16 @@ use App\Models\Transaksi;
 use App\Models\Kategori;
 use App\Models\Anggota;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TransaksiController extends Controller
 {
     public function index()
     {
-        $transaksis = Transaksi::with(['kategori', 'anggota'])->latest('tanggal')->get();
+        $transaksis = Transaksi::with(['kategori', 'anggota'])
+            ->latest('tanggal')
+            ->get();
+
         return view('transaksi.index', compact('transaksis'));
     }
 
@@ -19,6 +23,7 @@ class TransaksiController extends Controller
     {
         $kategoris = Kategori::all();
         $anggotas = Anggota::all();
+
         return view('transaksi.create', compact('kategoris', 'anggotas'));
     }
 
@@ -31,17 +36,28 @@ class TransaksiController extends Controller
             'tipe' => 'required|in:pemasukan,pengeluaran',
             'jumlah' => 'required|numeric|min:0',
             'keterangan' => 'nullable|string',
+
+            // Validasi bukti transaksi
+            'bukti' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        // Proses upload bukti transaksi
+        if ($request->hasFile('bukti')) {
+            $validated['bukti'] = $request->file('bukti')->store('bukti-transaksi', 'public');
+        }
 
         Transaksi::create($validated);
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan.');
+        return redirect()
+            ->route('transaksi.index')
+            ->with('success', 'Transaksi berhasil ditambahkan.');
     }
 
     public function edit(Transaksi $transaksi)
     {
         $kategoris = Kategori::all();
         $anggotas = Anggota::all();
+
         return view('transaksi.edit', compact('transaksi', 'kategoris', 'anggotas'));
     }
 
@@ -54,16 +70,44 @@ class TransaksiController extends Controller
             'tipe' => 'required|in:pemasukan,pengeluaran',
             'jumlah' => 'required|numeric|min:0',
             'keterangan' => 'nullable|string',
+
+            // Validasi bukti transaksi
+            'bukti' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
+
+        // Kalau ada bukti baru diupload
+        if ($request->hasFile('bukti')) {
+
+            // Hapus bukti lama jika ada
+            if ($transaksi->bukti && Storage::disk('public')->exists($transaksi->bukti)) {
+                Storage::disk('public')->delete($transaksi->bukti);
+            }
+
+            // Simpan bukti baru
+            $validated['bukti'] = $request->file('bukti')->store('bukti-transaksi', 'public');
+        } else {
+            // Kalau tidak upload bukti baru, jangan ubah bukti lama
+            unset($validated['bukti']);
+        }
 
         $transaksi->update($validated);
 
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
+        return redirect()
+            ->route('transaksi.index')
+            ->with('success', 'Transaksi berhasil diperbarui.');
     }
 
     public function destroy(Transaksi $transaksi)
     {
+        // Hapus file bukti jika ada
+        if ($transaksi->bukti && Storage::disk('public')->exists($transaksi->bukti)) {
+            Storage::disk('public')->delete($transaksi->bukti);
+        }
+
         $transaksi->delete();
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus.');
+
+        return redirect()
+            ->route('transaksi.index')
+            ->with('success', 'Transaksi berhasil dihapus.');
     }
 }
