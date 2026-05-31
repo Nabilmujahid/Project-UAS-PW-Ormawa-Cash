@@ -23,7 +23,7 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', poppins;
             background: var(--bg);
             color: #334155;
             font-size: 0.9rem;
