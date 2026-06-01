@@ -11,10 +11,10 @@
 
     <style>
         :root {
-            --primary: #0f766e;
-            --primary-dark: #115e59;
-            --primary-soft: #ccfbf1;
-            --bg: #f3f7f8;
+            --primary: #ec4899;
+            --primary-dark: #1e3a8a;
+            --primary-soft: #fce7f3;
+            --bg: #f8fafc;
             --text-dark: #0f172a;
             --text-muted: #64748b;
             --border: #e2e8f0;
