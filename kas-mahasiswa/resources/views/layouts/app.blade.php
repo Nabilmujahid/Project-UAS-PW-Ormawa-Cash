@@ -11,16 +11,15 @@
 
     <style>
         :root {
-            --primary: #002B4A;
-            --primary-dark: #001A2E;
-            --primary-soft: #96AAD1;
-            --accent-soft: #EEF3FC;
-            --bg: #F7F9FD;
-            --text-dark: #0F172A;
-            --text-muted: #64748B;
-            --border: #E2E8F0;
-            --danger-soft: #FFE8E8;
-            --danger: #FF5A5F;
+            --primary: #0f766e;
+            --primary-dark: #115e59;
+            --primary-soft: #ccfbf1;
+            --bg: #f3f7f8;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --danger-soft: #fee2e2;
+            --danger: #dc2626;
         }
 
         body {
@@ -36,12 +35,12 @@
             position: fixed;
             left: 0;
             top: 0;
-            background: #ffffff;
-            border-right: 1px solid #E8EEF7;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 55%, #ecfdf5 100%);
+            border-right: 1px solid var(--border);
             padding: 24px 18px;
             display: flex;
             flex-direction: column;
-            box-shadow: 8px 0 28px rgba(15, 23, 42, 0.04);
+            box-shadow: 8px 0 28px rgba(15, 23, 42, 0.06);
         }
 
         .brand-box {
@@ -52,13 +51,13 @@
 
         .brand-title {
             margin: 0;
-            color: #002B4A;
+            color: var(--primary-dark);
             font-weight: 800;
             font-size: 1.25rem;
         }
 
         .brand-title i {
-            color: #96AAD1;
+            color: var(--primary);
         }
 
         .brand-subtitle {
@@ -68,35 +67,104 @@
             line-height: 1.5;
         }
 
+        .sidebar-section-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 0 14px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu {
+            flex: 1;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #475569;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .sidebar a i {
+            width: 22px;
+            font-size: 1rem;
+            color: #64748b;
+        }
+
         .sidebar a:hover {
-            color: #002B4A;
-            background: #EEF3FC;
-            border-color: #D9E3F5;
+            color: var(--primary-dark);
+            background: #ecfdf5;
+            border-color: #99f6e4;
             transform: translateX(3px);
         }
 
         .sidebar a:hover i {
-            color: #5D84E8;
+            color: var(--primary-dark);
         }
 
         .sidebar a.active {
-            color: #002B4A;
-            background: #DDE7FB;
-            border: 1px solid #D2DFF8;
-            box-shadow: none;
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            box-shadow: 0 12px 24px rgba(15, 118, 110, 0.22);
         }
 
         .sidebar a.active i {
-            color: #5D84E8;
+            color: white;
+        }
+
+        .sidebar-footer {
+            padding-top: 18px;
+            border-top: 1px solid var(--border);
+        }
+
+        .logout-btn {
+            width: 100%;
+            border: none;
+            background: var(--danger-soft);
+            color: var(--danger);
+            padding: 12px 15px;
+            border-radius: 14px;
+            font-weight: 700;
+            text-align: left;
+            transition: all 0.2s ease;
+        }
+
+        .logout-btn:hover {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        .main-content {
+            min-height: 100vh;
+            padding: 28px 34px;
+        }
+
+        .main-content.with-sidebar {
+            margin-left: 265px;
+        }
+
+        .main-content.guest-content {
+            margin-left: 0;
+            padding: 0;
         }
 
         .topbar {
-            background: #ffffff;
-            border: 1px solid #E8EEF7;
-            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid var(--border);
+            border-radius: 22px;
             padding: 20px 24px;
             margin-bottom: 26px;
-            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
             position: relative;
             overflow: hidden;
         }
@@ -108,35 +176,159 @@
             top: 0;
             width: 7px;
             height: 100%;
-            background: linear-gradient(180deg, #96AAD1, #002B4A);
+            background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+        }
+
+        .page-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin: 0;
         }
 
         .user-pill {
-            background: #EEF3FC;
-            border: 1px solid #D9E3F5;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            padding: 8px 14px;
+            color: #475569;
+            font-size: 0.84rem;
         }
 
         .user-pill i {
-            color: #5D84E8;
+            color: var(--primary);
+        }
+
+        .user-pill strong {
+            color: var(--text-dark);
+        }
+
+        .card {
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            box-shadow: 0 14px 32px rgba(15, 23, 42, 0.06);
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-body {
+            padding: 22px;
+        }
+
+        /* =========================
+        BUTTON
+        ========================= */
+
+        .btn {
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all .2s ease;
+        }
+
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            line-height: 1.3;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #4F7EF7, #002B4A);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border: none;
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, #3B6CF0, #001A2E);
+            background: linear-gradient(135deg, var(--primary-dark), #134e4a);
+        }
+
+/* tombol aksi tabel */
+.table-action-btn {
+    padding: 4px 8px !important;
+    font-size: 0.75rem !important;
+    border-radius: 8px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.table-action-btn i {
+    font-size: 0.72rem !important;
+}
+
+.table td .btn {
+    margin: 2px;
+}
+        .table {
+            margin-bottom: 0;
+            font-size: 0.88rem;
+        }
+
+        .table thead th {
+            background: #f8fafc;
+            color: #0f172a;
+            font-weight: 800;
+            border-bottom: 1px solid var(--border);
+            padding: 14px 12px;
+        }
+
+        .table tbody td {
+            padding: 14px 12px;
+            vertical-align: middle;
         }
 
         .table-hover tbody tr:hover {
-            background-color: #F7F9FD;
+            background-color: #f0fdfa;
+        }
+
+        .alert {
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.06);
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 13px;
+            padding: 10px 12px;
+            border-color: #cbd5e1;
+            font-size: 0.9rem;
         }
 
         .form-control:focus,
         .form-select:focus {
-            border-color: #96AAD1;
-            box-shadow: 0 0 0 0.2rem rgba(150, 170, 209, 0.18);
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.14);
+        }
+
+        .form-label {
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 7px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                min-height: auto;
+            }
+
+            .main-content.with-sidebar {
+                margin-left: 0;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 12px;
+            }
         }
     </style>
 </head>
